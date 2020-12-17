@@ -8,7 +8,7 @@
 log-dhcp
 {% endif %}
 
-{% if dnsmasq_conf_domain is defined %}
+{% if dnsmasq_conf_domain is defined and dnsmasq_conf_domain is not none %}
 # Set the domain for dnsmasq. this is optional, but if it is set, it
 # does the following things.
 # 1) Allows DHCP hosts to have fully qualified domain names, as long
@@ -124,3 +124,9 @@ leasefile-ro
 # transfer completes, the executable specified by this option is run.
 dhcp-script={{ dnsmasq_config_dhcpscript }}
 {% endif %}
+
+{% if dhcpmasq_conf_log_dhcp is defined and dhcpmasq_conf_log_dhcp -%}
+# Log lots of extra information about DHCP transactions.
+log-dhcp
+{% endif %}
+
