@@ -37,6 +37,14 @@
     and not dnsmasq_os_packages
   tags: ["redhat", "repository"]
 
+- name: Archlinux - Install required packages
+  pacman:
+    name: "{{ item.key if ('version' not in item.value) else ('%s-%s' % (item.key, item.value['version'])) }}"
+    state: "{{ item.value.state | default('present') }}"
+  with_dict: "{{ dnsmasq_packages }}"
+  when:
+    - ansible_os_family == 'Archlinux'
+  tags: ["archlinux", "repository"]
 
 - name: RedHat - Install required packages
   yum:
@@ -61,7 +69,7 @@
   tags: ["debian", "packages"]
 
 - name: Check if packages were installed
-  set_fact: _dnsmasq_reinstalled="{{ __dnsmasq_installed_rh.changed or __dnsmasq_installed_debian.changed }}"
+  set_fact: _dnsmasq_reinstalled="{{ __dnsmasq_installed_rh is changed or __dnsmasq_installed_debian is changed }}"
 
 - name: Ensure dnsmasq is stopped after initial install
   service: name="{{ dnsmasq_daemon }}" state=stopped enabled=no
@@ -95,7 +103,7 @@
 
   - name: Reload systemd
     command: systemctl daemon-reload
-    when: __dnsmasq_systemd|changed
+    when: __dnsmasq_systemd is changed
 
   when: dnsmasq_init_system == 'systemd'
   tags: ["systemd", "init"]
