@@ -6,6 +6,9 @@ dnsmasq_resolvconf: False
 # Install from upstream repos or directly from operating system packages
 dnsmasq_os_packages: True
 
+# Package state
+dnsmasq_package_state: present
+
 # Global parameters, settings needed! otherwise are ignored!
 dnsmasq_dhcp: True
 dnsmasq_tftp: True
