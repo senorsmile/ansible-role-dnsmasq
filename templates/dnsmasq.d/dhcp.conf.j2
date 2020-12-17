@@ -124,9 +124,3 @@ leasefile-ro
 # transfer completes, the executable specified by this option is run.
 dhcp-script={{ dnsmasq_config_dhcpscript }}
 {% endif %}
-
-{% if dhcpmasq_conf_log_dhcp is defined and dhcpmasq_conf_log_dhcp -%}
-# Log lots of extra information about DHCP transactions.
-log-dhcp
-{% endif %}
-
