@@ -113,6 +113,13 @@ dhcp-generate-names=tag:{{ key }}
 dhcp-hostsfile={{ dnsmasq_config_dhcphosts }}
 {% endif %}
 
+{% if dnsmasq_conf_dhcp_static_hosts is defined and not dnsmasq_conf_dhcp_static_hosts is none -%}
+# If you’d like to have dnsmasq assign static IPs to some clients, bind the LAN computers NIC MAC addresses:
+{% for dhcp_static_host in dnsmasq_conf_dhcp_static_hosts %}
+dhcp-host={{ dhcp_static_host.mac }},{{ dhcp_static_host.ip }}{% if 'host' in dhcp_static_host %},{{ dhcp_static_host.host }}{% endif %}{% if 'comment' in dhcp_static_host %} # {{ dhcp_static_host.comment }}{% endif %} 
+{% endfor %}
+{% endif %}
+
 {% if dnsmasq_conf_dhcp_leasefile_ro is defined and dnsmasq_conf_dhcp_leasefile_ro -%}
 # Completely suppress use of the lease database file. The file will not be
 # created, read, or written.
